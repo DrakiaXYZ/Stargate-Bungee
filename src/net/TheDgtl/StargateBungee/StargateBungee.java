@@ -21,7 +21,12 @@ public class StargateBungee extends JavaPlugin {
 	@Override
 	public void onPluginMessage(PluginMessageEvent event) {
 		if (!event.getTag().equals("SGBungee")) return;
-		if (event.getDestination() != Destination.CLIENT) return;
+		
+		// Disallow clients from spoofing the SGBungee packet
+		if (event.getDestination() != Destination.CLIENT) {
+			event.setCancelled(true);
+			return;
+		}
 		
 		// Split the message to get server/gate
 		String[] data = event.getData().split("@#@");
